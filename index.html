@@ -1,0 +1,678 @@
+<!doctype html>
+<html lang="id">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Perencanaan Pembelajaran Mendalam</title>
+  <script src="/_sdk/element_sdk.js"></script>
+  <style>
+        body {
+            box-sizing: border-box;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow-x: hidden;
+            width: 100%;
+        }
+
+        .app-container {
+            width: 100%;
+            min-height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            position: relative;
+        }
+
+        /* Animated Background Elements */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .floating-shape {
+            position: absolute;
+            border-radius: 50%;
+            animation: float 20s infinite ease-in-out;
+            opacity: 0.1;
+        }
+
+        .shape1 {
+            width: 300px;
+            height: 300px;
+            background: white;
+            top: 10%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .shape2 {
+            width: 200px;
+            height: 200px;
+            background: white;
+            top: 60%;
+            right: 15%;
+            animation-delay: 5s;
+        }
+
+        .shape3 {
+            width: 150px;
+            height: 150px;
+            background: white;
+            bottom: 20%;
+            left: 20%;
+            animation-delay: 10s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-50px) rotate(180deg); }
+        }
+
+        /* Landing Page */
+        .landing-page {
+            width: 100%;
+            min-height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 30px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .landing-page.hidden {
+            display: none;
+        }
+
+        .title-container {
+            text-align: center;
+            margin-bottom: 60px;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .main-title {
+            font-size: 4em;
+            font-weight: 800;
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 20px;
+            text-shadow: 3px 3px 10px rgba(0,0,0,0.3);
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { text-shadow: 3px 3px 10px rgba(0,0,0,0.3); }
+            to { text-shadow: 3px 3px 20px rgba(255,255,255,0.6); }
+        }
+
+        .subtitle {
+            font-size: 1.5em;
+            color: rgba(255,255,255,0.9);
+            margin-bottom: 40px;
+            font-weight: 300;
+        }
+
+        .author-section {
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(10px);
+            padding: 30px 50px;
+            border-radius: 20px;
+            margin-bottom: 40px;
+            border: 2px solid rgba(255,255,255,0.2);
+            animation: fadeIn 1.5s ease-out 0.5s both;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .author-info {
+            color: white;
+            font-size: 1.1em;
+            margin: 10px 0;
+        }
+
+        .author-info strong {
+            font-weight: 600;
+        }
+
+        .enter-button {
+            padding: 20px 60px;
+            font-size: 1.3em;
+            font-weight: 600;
+            color: #667eea;
+            background: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+            animation: bounce 2s infinite;
+            position: relative;
+            overflow: hidden;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .enter-button:hover {
+            transform: scale(1.1) translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+            animation: none;
+        }
+
+        .enter-button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(102, 126, 234, 0.2);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .enter-button:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .enter-button span {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Content Pages */
+        .content-container {
+            width: 100%;
+            min-height: 100%;
+            display: none;
+            position: relative;
+            z-index: 1;
+        }
+
+        .content-container.active {
+            display: block;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .navigation {
+            width: 100%;
+            background: rgba(255,255,255,0.95);
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .nav-btn {
+            padding: 12px 25px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1em;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .nav-btn:active {
+            transform: translateY(-1px);
+        }
+
+        .nav-btn.active-page {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .home-btn {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+        }
+
+        .content-page {
+            padding: 60px 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .page-title {
+            font-size: 3em;
+            color: white;
+            text-align: center;
+            margin-bottom: 50px;
+            font-weight: 700;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.2);
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .content-card {
+            background: rgba(255,255,255,0.95);
+            padding: 35px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: all 0.4s ease;
+            animation: fadeInUp 0.8s ease-out backwards;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .content-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, #667eea, #764ba2, #f093fb);
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
+        }
+
+        .content-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .content-card:nth-child(1) { animation-delay: 0.1s; }
+        .content-card:nth-child(2) { animation-delay: 0.2s; }
+        .content-card:nth-child(3) { animation-delay: 0.3s; }
+        .content-card:nth-child(4) { animation-delay: 0.4s; }
+        .content-card:nth-child(5) { animation-delay: 0.5s; }
+        .content-card:nth-child(6) { animation-delay: 0.6s; }
+        .content-card:nth-child(7) { animation-delay: 0.7s; }
+        .content-card:nth-child(8) { animation-delay: 0.8s; }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .content-card:hover {
+            transform: translateY(-10px) scale(1.03);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+
+        .card-icon {
+            font-size: 3em;
+            margin-bottom: 20px;
+            display: block;
+            animation: rotate 3s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .content-card:hover .card-icon {
+            animation: bounce 0.6s ease;
+        }
+
+        .card-title {
+            font-size: 1.4em;
+            color: #667eea;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .card-description {
+            font-size: 1.1em;
+            color: #555;
+            line-height: 1.6;
+        }
+
+        /* Page specific styles */
+        .page-1 .content-card:nth-child(1) .card-icon { animation-delay: 0s; }
+        .page-1 .content-card:nth-child(2) .card-icon { animation-delay: 0.2s; }
+        .page-1 .content-card:nth-child(3) .card-icon { animation-delay: 0.4s; }
+        .page-1 .content-card:nth-child(4) .card-icon { animation-delay: 0.6s; }
+        .page-1 .content-card:nth-child(5) .card-icon { animation-delay: 0.8s; }
+        .page-1 .content-card:nth-child(6) .card-icon { animation-delay: 1s; }
+        .page-1 .content-card:nth-child(7) .card-icon { animation-delay: 1.2s; }
+        .page-1 .content-card:nth-child(8) .card-icon { animation-delay: 1.4s; }
+
+        @media (max-width: 768px) {
+            .main-title {
+                font-size: 2.5em;
+            }
+            
+            .subtitle {
+                font-size: 1.2em;
+            }
+            
+            .page-title {
+                font-size: 2em;
+            }
+            
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav-buttons {
+                flex-wrap: wrap;
+            }
+        }
+    </style>
+  <style>@view-transition { navigation: auto; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+  <script src="https://cdn.tailwindcss.com" type="text/javascript"></script>
+ </head>
+ <body>
+  <div class="app-container"><!-- Animated Background -->
+   <div class="bg-animation">
+    <div class="floating-shape shape1"></div>
+    <div class="floating-shape shape2"></div>
+    <div class="floating-shape shape3"></div>
+   </div><!-- Landing Page -->
+   <div class="landing-page" id="landingPage">
+    <div class="title-container">
+     <h1 class="main-title" id="mainTitle">Perencanaan Pembelajaran Mendalam</h1>
+     <p class="subtitle" id="subtitle">Pada Pembelajaran Dasar TKJ</p>
+    </div>
+    <div class="author-section">
+     <div class="author-info">
+      Dibuat oleh: <strong id="authorName">Ginda Azka Badranaya</strong>
+     </div>
+     <div class="author-info">
+      Guru Pembimbing: <strong id="supervisorName">Dr. Mutia Liana, S.Pd, M.Pd</strong>
+     </div>
+    </div><button class="enter-button" id="enterButton"> <span id="buttonText">🚀 Mulai Eksplorasi</span> </button>
+   </div><!-- Content Container -->
+   <div class="content-container" id="contentContainer">
+    <nav class="navigation"><button class="nav-btn home-btn" onclick="goHome()">🏠 Beranda</button>
+     <div class="nav-buttons"><button class="nav-btn" onclick="showPage(1)">Halaman 1</button> <button class="nav-btn" onclick="showPage(2)">Halaman 2</button> <button class="nav-btn" onclick="showPage(3)">Halaman 3</button> <button class="nav-btn" onclick="showPage(4)">Halaman 4</button>
+     </div>
+    </nav><!-- Page 1: Delapan Dimensi -->
+    <div class="content-page page-1" id="page1">
+     <h2 class="page-title">✨ Delapan Dimensi</h2>
+     <div class="content-grid">
+      <div class="content-card"><span class="card-icon">🤲</span>
+       <h3 class="card-title">Keimanan dan Ketakwaan</h3>
+       <p class="card-description">Terhadap Tuhan Yang Maha Esa sebagai fondasi spiritual dalam pembelajaran</p>
+      </div>
+      <div class="content-card"><span class="card-icon">🏛️</span>
+       <h3 class="card-title">Kewargaan</h3>
+       <p class="card-description">Membangun kesadaran sebagai warga negara yang bertanggung jawab</p>
+      </div>
+      <div class="content-card"><span class="card-icon">🧠</span>
+       <h3 class="card-title">Penalaran Kritis</h3>
+       <p class="card-description">Mengembangkan kemampuan berpikir logis dan analitis</p>
+      </div>
+      <div class="content-card"><span class="card-icon">🎨</span>
+       <h3 class="card-title">Kreativitas</h3>
+       <p class="card-description">Mendorong inovasi dan pemikiran out of the box</p>
+      </div>
+      <div class="content-card"><span class="card-icon">🤝</span>
+       <h3 class="card-title">Kolaborasi</h3>
+       <p class="card-description">Bekerja sama untuk mencapai tujuan bersama</p>
+      </div>
+      <div class="content-card"><span class="card-icon">💪</span>
+       <h3 class="card-title">Kemandirian</h3>
+       <p class="card-description">Membangun sikap mandiri dan bertanggung jawab</p>
+      </div>
+      <div class="content-card"><span class="card-icon">❤️</span>
+       <h3 class="card-title">Kesehatan</h3>
+       <p class="card-description">Menjaga keseimbangan fisik dan mental</p>
+      </div>
+      <div class="content-card"><span class="card-icon">💬</span>
+       <h3 class="card-title">Komunikasi</h3>
+       <p class="card-description">Mengembangkan kemampuan menyampaikan ide dengan efektif</p>
+      </div>
+     </div>
+    </div><!-- Page 2: Tiga Prinsip -->
+    <div class="content-page page-2" id="page2" style="display:none;">
+     <h2 class="page-title">🌟 Tiga Prinsip Landasan Dimensi</h2>
+     <div class="content-grid">
+      <div class="content-card"><span class="card-icon">📚</span>
+       <h3 class="card-title">Bermakna</h3>
+       <p class="card-description">Pembelajaran yang relevan dan memiliki nilai signifikan bagi peserta didik dalam kehidupan nyata</p>
+      </div>
+      <div class="content-card"><span class="card-icon">🧘</span>
+       <h3 class="card-title">Berkesadaran</h3>
+       <p class="card-description">Membangun pemahaman mendalam dengan kesadaran penuh terhadap proses dan tujuan pembelajaran</p>
+      </div>
+      <div class="content-card"><span class="card-icon">😊</span>
+       <h3 class="card-title">Menggembirakan</h3>
+       <p class="card-description">Menciptakan suasana pembelajaran yang menyenangkan dan memotivasi</p>
+      </div>
+     </div>
+    </div><!-- Page 3: Pelaksanaan -->
+    <div class="content-page page-3" id="page3" style="display:none;">
+     <h2 class="page-title">🎯 Pelaksanaan</h2>
+     <div class="content-grid">
+      <div class="content-card"><span class="card-icon">🧩</span>
+       <h3 class="card-title">Olah Pikir</h3>
+       <p class="card-description">Mengembangkan kemampuan kognitif melalui proses berpikir yang sistematis dan terstruktur</p>
+      </div>
+      <div class="content-card"><span class="card-icon">💖</span>
+       <h3 class="card-title">Olah Hati</h3>
+       <p class="card-description">Membentuk karakter dan nilai-nilai moral yang kuat dalam diri peserta didik</p>
+      </div>
+      <div class="content-card"><span class="card-icon">🎭</span>
+       <h3 class="card-title">Olah Rasa</h3>
+       <p class="card-description">Mengasah kepekaan dan apresiasi terhadap keindahan serta nilai estetika</p>
+      </div>
+      <div class="content-card"><span class="card-icon">🏃</span>
+       <h3 class="card-title">Olah Raga</h3>
+       <p class="card-description">Melatih keterampilan fisik dan menjaga kesehatan tubuh secara optimal</p>
+      </div>
+     </div>
+    </div><!-- Page 4: Proses -->
+    <div class="content-page page-4" id="page4" style="display:none;">
+     <h2 class="page-title">🔄 Pengalaman Mendalam Diciptakan Melalui Proses</h2>
+     <div class="content-grid">
+      <div class="content-card"><span class="card-icon">🔍</span>
+       <h3 class="card-title">Memahami</h3>
+       <p class="card-description">Menggali konsep dan ide secara mendalam untuk membangun pemahaman yang kokoh</p>
+      </div>
+      <div class="content-card"><span class="card-icon">⚡</span>
+       <h3 class="card-title">Mengaplikasi</h3>
+       <p class="card-description">Menerapkan pengetahuan dalam situasi nyata untuk memperkuat pembelajaran</p>
+      </div>
+      <div class="content-card"><span class="card-icon">🪞</span>
+       <h3 class="card-title">Merefleksi</h3>
+       <p class="card-description">Mengevaluasi dan merenungkan pengalaman untuk mengembangkan wawasan lebih lanjut</p>
+      </div>
+     </div>
+    </div>
+   </div>
+  </div>
+  <script>
+        const defaultConfig = {
+            main_title: "Perencanaan Pembelajaran Mendalam",
+            subtitle: "Pada Pembelajaran Dasar TKJ",
+            author_name: "Ginda Azka Badranaya",
+            supervisor_name: "Dr. Mutia Liana, S.Pd, M.Pd",
+            button_text: "🚀 Mulai Eksplorasi",
+            background_color: "#667eea",
+            card_color: "#ffffff",
+            text_color: "#333333",
+            primary_action: "#667eea",
+            secondary_action: "#764ba2"
+        };
+
+        let currentPage = 1;
+
+        async function onConfigChange(config) {
+            document.getElementById('mainTitle').textContent = config.main_title || defaultConfig.main_title;
+            document.getElementById('subtitle').textContent = config.subtitle || defaultConfig.subtitle;
+            document.getElementById('authorName').textContent = config.author_name || defaultConfig.author_name;
+            document.getElementById('supervisorName').textContent = config.supervisor_name || defaultConfig.supervisor_name;
+            document.getElementById('buttonText').textContent = config.button_text || defaultConfig.button_text;
+
+            const bgColor = config.background_color || defaultConfig.background_color;
+            const cardColor = config.card_color || defaultConfig.card_color;
+            const textColor = config.text_color || defaultConfig.text_color;
+            const primaryAction = config.primary_action || defaultConfig.primary_action;
+            const secondaryAction = config.secondary_action || defaultConfig.secondary_action;
+
+            document.querySelector('.app-container').style.background = `linear-gradient(135deg, ${bgColor} 0%, ${secondaryAction} 100%)`;
+            
+            const cards = document.querySelectorAll('.content-card');
+            cards.forEach(card => {
+                card.style.background = cardColor;
+            });
+
+            const cardDescriptions = document.querySelectorAll('.card-description');
+            cardDescriptions.forEach(desc => {
+                desc.style.color = textColor;
+            });
+
+            const navButtons = document.querySelectorAll('.nav-btn:not(.home-btn)');
+            navButtons.forEach(btn => {
+                btn.style.background = `linear-gradient(135deg, ${primaryAction} 0%, ${secondaryAction} 100%)`;
+            });
+
+            const cardTitles = document.querySelectorAll('.card-title');
+            cardTitles.forEach(title => {
+                title.style.color = primaryAction;
+            });
+        }
+
+        if (window.elementSdk) {
+            window.elementSdk.init({
+                defaultConfig,
+                onConfigChange,
+                mapToCapabilities: (config) => ({
+                    recolorables: [
+                        {
+                            get: () => config.background_color || defaultConfig.background_color,
+                            set: (value) => {
+                                config.background_color = value;
+                                window.elementSdk.setConfig({ background_color: value });
+                            }
+                        },
+                        {
+                            get: () => config.card_color || defaultConfig.card_color,
+                            set: (value) => {
+                                config.card_color = value;
+                                window.elementSdk.setConfig({ card_color: value });
+                            }
+                        },
+                        {
+                            get: () => config.text_color || defaultConfig.text_color,
+                            set: (value) => {
+                                config.text_color = value;
+                                window.elementSdk.setConfig({ text_color: value });
+                            }
+                        },
+                        {
+                            get: () => config.primary_action || defaultConfig.primary_action,
+                            set: (value) => {
+                                config.primary_action = value;
+                                window.elementSdk.setConfig({ primary_action: value });
+                            }
+                        },
+                        {
+                            get: () => config.secondary_action || defaultConfig.secondary_action,
+                            set: (value) => {
+                                config.secondary_action = value;
+                                window.elementSdk.setConfig({ secondary_action: value });
+                            }
+                        }
+                    ],
+                    borderables: [],
+                    fontEditable: undefined,
+                    fontSizeable: undefined
+                }),
+                mapToEditPanelValues: (config) => new Map([
+                    ["main_title", config.main_title || defaultConfig.main_title],
+                    ["subtitle", config.subtitle || defaultConfig.subtitle],
+                    ["author_name", config.author_name || defaultConfig.author_name],
+                    ["supervisor_name", config.supervisor_name || defaultConfig.supervisor_name],
+                    ["button_text", config.button_text || defaultConfig.button_text]
+                ])
+            });
+        }
+
+        document.getElementById('enterButton').addEventListener('click', function() {
+            document.getElementById('landingPage').classList.add('hidden');
+            document.getElementById('contentContainer').classList.add('active');
+            showPage(1);
+        });
+
+        function showPage(pageNum) {
+            currentPage = pageNum;
+            
+            const pages = document.querySelectorAll('.content-page');
+            pages.forEach(page => page.style.display = 'none');
+            
+            const navButtons = document.querySelectorAll('.nav-btn:not(.home-btn)');
+            navButtons.forEach(btn => btn.classList.remove('active-page'));
+            
+            document.getElementById('page' + pageNum).style.display = 'block';
+            navButtons[pageNum - 1].classList.add('active-page');
+        }
+
+        function goHome() {
+            document.getElementById('landingPage').classList.remove('hidden');
+            document.getElementById('contentContainer').classList.remove('active');
+        }
+    </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9a6b5de977370ad8',t:'MTc2NDUxNjQyNS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
